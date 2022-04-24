@@ -11,7 +11,11 @@
       <div v-show="show">
         <formPaymentAdd @addNewPayment="addPaymentData" />
       </div>
-      <paymentsList :payments="currentPageElements" />
+      <paymentsList
+        :payments="currentPageElements"
+        :currentPage="current"
+        :elementsOnPage="elementsOnPage"
+      />
       <paginationModule
         :current="current"
         :length="paymentsList.length"
@@ -42,7 +46,7 @@ export default {
       show: false,
       paymentsList: [],
       current: 1,
-      elementsOnPage: 3,
+      elementsOnPage: 5,
     };
   },
   computed: {

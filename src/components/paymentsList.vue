@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <tr v-for="(payment, i) in payments" :key="i">
-          <td>{{ i + 1 }}</td>
+          <td>{{ elNumber + i + 1 }}</td>
           <td>{{ payment.date }}</td>
           <td>{{ payment.category }}</td>
           <td>{{ payment.value }}</td>
@@ -28,6 +28,20 @@ export default {
     payments: {
       type: Array,
       default: () => [],
+    },
+    elementsOnPage: {
+      type: Number,
+    },
+    currentPage: {
+      type: Number,
+    },
+  },
+  computed: {
+    elNumber() {
+      if (this.currentPage > 1) {
+        return this.elementsOnPage * this.currentPage - this.elementsOnPage;
+      }
+      return 0;
     },
   },
   data() {
