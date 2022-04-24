@@ -48,10 +48,11 @@ export default {
     addPaymentData() {
       const data = {
         date: this.convertDate(this.date),
-        category: this.description,
-        value: this.amount,
+        category: this.category,
+        value: this.value,
       };
       this.$emit("addNewPayment", data);
+      console.log(data);
     },
   },
 };
