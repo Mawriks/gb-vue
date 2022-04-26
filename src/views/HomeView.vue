@@ -16,6 +16,7 @@
         :currentPage="current"
         :elementsOnPage="elementsOnPage"
       />
+      <br />
       <paginationModule
         :current="current"
         :length="paymentsList.length"
