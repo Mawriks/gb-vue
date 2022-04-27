@@ -5,24 +5,37 @@
         <h1 class="title">My personal costs</h1>
       </header>
       <formVisiabilityButton
+        :classBtn="'show'"
         :show="show"
-        @changeVisiability="changeVisiability"
-      />
+        @changeVisiability="changeVisiability('show')"
+      >
+        Add new cost
+      </formVisiabilityButton>
       <div v-show="show">
-        <formPaymentAdd @addNewPayment="addPaymentData" />
+        <formPaymentAdd />
       </div>
-      <paymentsList
+      <!-- <paymentsList
         :payments="currentPageElements"
         :currentPage="current"
         :elementsOnPage="elementsOnPage"
-      />
-      <br />
+      /> -->
+      <paymentsList :payments="currentPageElements" />
+      <!-- <paginationModule
+        :current="current"
+        :length="getPaymentsList.length"
+        :elementsOnPage="elementsOnPage"
+        @changePage="changePage"
+      /> -->
       <paginationModule
         :current="current"
-        :length="paymentsList.length"
+        :length="12"
         :elementsOnPage="elementsOnPage"
         @changePage="changePage"
       />
+      <br />
+      <div>
+        <formCategoryAdd />
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +46,8 @@ import paymentsList from "@/components/paymentsList.vue";
 import formVisiabilityButton from "@/components/formVisiabilityButton.vue";
 import formPaymentAdd from "@/components/formPaymentAdd.vue";
 import paginationModule from "@/components/paginationModule.vue";
+import formCategoryAdd from "@/components/formCategoryAdd.vue";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "HomeView",
@@ -41,55 +56,39 @@ export default {
     formVisiabilityButton,
     formPaymentAdd,
     paginationModule,
+    formCategoryAdd,
   },
   data() {
     return {
       show: false,
-      paymentsList: [],
       current: 1,
-      elementsOnPage: 5,
+      elementsOnPage: 3,
     };
   },
   computed: {
+    ...mapGetters(["getPaymentsList"]),
     currentPageElements() {
-      return this.paymentsList.slice(
+      return this.getPaymentsList.slice(
         this.elementsOnPage * (this.current - 1),
         this.elementsOnPage * (this.current - 1) + this.elementsOnPage
       );
     },
   },
   methods: {
+    ...mapMutations(["setPaymentsListData"]),
+
     changePage(page) {
       this.current = page;
+      /* here */
+      this.$store.dispatch("fetchData", page);
     },
-    changeVisiability() {
-      this.show = !this.show;
-    },
-    addPaymentData(data) {
-      this.paymentsList.push(data);
-    },
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Transport",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Food",
-          value: 532,
-        },
-      ];
+    changeVisiability(el) {
+      this[el] = !this[el];
     },
   },
   created() {
-    this.paymentsList = this.fetchData();
+    /*here*/
+    this.$store.dispatch("fetchData", this.current);
   },
 };
 </script>

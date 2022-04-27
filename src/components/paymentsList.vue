@@ -11,17 +11,21 @@
       </thead>
       <tbody>
         <tr v-for="(payment, i) in payments" :key="i">
-          <td>{{ elNumber + i + 1 }}</td>
+          <!-- <td>{{ elNumber + i + 1 }}</td> -->
+          <td>{{ payment.id }}</td>
           <td>{{ payment.date }}</td>
           <td>{{ payment.category }}</td>
           <td>{{ payment.value }}</td>
         </tr>
       </tbody>
     </table>
+    <p>Total: {{ getFPV }}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "paymentsList",
   props: {
@@ -29,25 +33,25 @@ export default {
       type: Array,
       default: () => [],
     },
-    elementsOnPage: {
+    /*     elementsOnPage: {
       type: Number,
     },
     currentPage: {
       type: Number,
-    },
+    }, */
   },
   computed: {
-    elNumber() {
+    ...mapGetters(["getFullPaymentValue"]),
+    /* elNumber() {
       if (this.currentPage > 1) {
         return this.elementsOnPage * this.currentPage - this.elementsOnPage;
       }
       return 0;
+    }, */
+    getFPV() {
+      return this.getFullPaymentValue;
     },
   },
-  data() {
-    return {};
-  },
-  methods: {},
 };
 </script>
 

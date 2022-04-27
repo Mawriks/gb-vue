@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="changeVisiability" class="btn">
-      Add new cost <span>{{ icon }}</span>
+    <button :class="classBtn" @click="changeVisiability" class="btn">
+      <slot></slot>
+      <span>{{ icon }}</span>
     </button>
   </div>
 </template>
@@ -13,6 +14,10 @@ export default {
     show: {
       type: Boolean,
       default: () => false,
+    },
+    classBtn: {
+      type: String,
+      default: "",
     },
   },
   data() {

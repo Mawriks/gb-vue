@@ -1,24 +1,11 @@
 <template>
-  <form @submit.prevent="addPaymentData">
+  <form @submit.prevent="addCategoryData">
     <fieldset>
-      <legend>Add new cost</legend>
-      <div>
-        <input type="date" placeholder="Payment data" v-model="date" />
-        <input
-          type="number"
-          placeholder="Payment value"
-          v-model.number="value"
-        />
-      </div>
-      <select v-model="category">
-        <option disabled selected value="">Выберите категорию</option>
-        <option v-for="(option, i) in categoryList" :key="i" :value="option">
-          {{ option }}
-        </option>
-      </select>
+      <legend>Add new category</legend>
+      <input type="text" v-model="category" placeholder="New category name" />
     </fieldset>
     <br />
-    <button class="btn">Add cost <span>+</span></button>
+    <button class="btn">Add category <span>+</span></button>
   </form>
 </template>
 
@@ -26,12 +13,10 @@
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
-  name: "formPaymentAdd",
+  name: "formCategoryAdd",
   data() {
     return {
       category: "",
-      value: null,
-      date: null,
     };
   },
   computed: {
@@ -40,38 +25,18 @@ export default {
     categoryList() {
       return this.getCategoryList;
     },
-    getCurrentDate() {
-      const today = new Date();
-      const options = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      };
-      const currentDate = new Intl.DateTimeFormat("ru-RU", options).format(
-        today
-      );
-      return currentDate;
-    },
   },
   methods: {
-    ...mapMutations(["addDataToPaymentsList"]),
-    convertDate(date) {
-      if (date) {
-        let dateArr = date.split("-");
-        if (+dateArr[1] < 10) {
-          return `${dateArr[2]}.0${+dateArr[1]}.${dateArr[0]}`;
-        }
-        return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]}`;
+    ...mapMutations(["addDataToCategoryList"]),
+    addCategoryData() {
+      const data = this.category;
+      let flag = this.categoryList.findIndex(
+        (val) => val.toUpperCase() == data.toUpperCase()
+      );
+      if (flag < 0 && data != "") {
+        this.addDataToCategoryList(data);
       }
-      return this.getCurrentDate;
-    },
-    addPaymentData() {
-      const data = {
-        date: this.convertDate(this.date),
-        category: this.category,
-        value: this.value,
-      };
-      this.addDataToPaymentsList(data);
+      this.category = "";
     },
   },
   created() {
