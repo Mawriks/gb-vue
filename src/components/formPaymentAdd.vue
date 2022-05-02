@@ -27,6 +27,16 @@ import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "formPaymentAdd",
+  props: {
+    categoryProp: {
+      type: String,
+      default: () => "",
+    },
+    valueProp: {
+      type: Number,
+      default: () => null,
+    },
+  },
   data() {
     return {
       category: "",
@@ -76,6 +86,17 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchCategoryList");
+  },
+  mounted() {
+    if (this.categoryProp) {
+      this.category = this.categoryProp;
+    }
+    if (this.valueProp) {
+      this.value = this.valueProp;
+    }
+    if (this.categoryProp && this.valueProp) {
+      this.addPaymentData();
+    }
   },
 };
 </script>

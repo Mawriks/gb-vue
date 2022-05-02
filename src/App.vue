@@ -2,9 +2,12 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/add/payment/Transport?value=200"
+        >Add to Transport Category payment with 200$</router-link
+      >
     </nav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
