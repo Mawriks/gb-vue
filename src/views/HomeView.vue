@@ -14,21 +14,14 @@
       <div v-show="show">
         <formPaymentAdd />
       </div>
-      <!-- <paymentsList
+      <paymentsList
         :payments="currentPageElements"
         :currentPage="current"
         :elementsOnPage="elementsOnPage"
-      /> -->
-      <paymentsList :payments="currentPageElements" />
-      <!-- <paginationModule
-        :current="current"
-        :length="getPaymentsList.length"
-        :elementsOnPage="elementsOnPage"
-        @changePage="changePage"
-      /> -->
+      />
       <paginationModule
         :current="current"
-        :length="12"
+        :length="getPaymentsList.length"
         :elementsOnPage="elementsOnPage"
         @changePage="changePage"
       />
@@ -76,19 +69,15 @@ export default {
   },
   methods: {
     ...mapMutations(["setPaymentsListData"]),
-
     changePage(page) {
       this.current = page;
-      /* here */
-      this.$store.dispatch("fetchData", page);
     },
     changeVisiability(el) {
       this[el] = !this[el];
     },
   },
   created() {
-    /*here*/
-    this.$store.dispatch("fetchData", this.current);
+    this.$store.dispatch("fetchData");
   },
 };
 </script>
