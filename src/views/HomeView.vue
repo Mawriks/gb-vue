@@ -59,7 +59,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getPaymentsList"]),
+    ...mapGetters(["getPaymentsList", "getDataLoaded"]),
     currentPageElements() {
       return this.getPaymentsList.slice(
         this.elementsOnPage * (this.current - 1),
@@ -76,8 +76,10 @@ export default {
       this[el] = !this[el];
     },
   },
-  created() {
-    this.$store.dispatch("fetchData");
+  async created() {
+    if (!this.getDataLoaded) {
+      await this.$store.dispatch("fetchData");
+    }
   },
 };
 </script>

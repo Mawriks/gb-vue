@@ -8,6 +8,8 @@ export default new Vuex.Store({
     paymentsList: [],
     categoryList: [],
     paymentsListIds: [],
+    dataLoaded: false,
+    categoriesLoaded: false
   },
   getters: {
     getPaymentsList: state => state.paymentsList,
@@ -15,8 +17,16 @@ export default new Vuex.Store({
     getFullPaymentValue: state => {
       return state.paymentsList.reduce((res, cur) => res + cur.value, 0)
     },
+    getDataLoaded: state =>state.dataLoaded,
+    getCategoriesLoaded: state =>state.categoriesLoaded,
   },
   mutations: {
+    setDataLoaded(state, payload){
+      state.dataLoaded = payload;
+    },
+    setCategoriesLoaded(state, payload){
+      state.categoriesLoaded = payload;
+    },
     setPaymentsListData(state, payload) {
       state.paymentsList = payload
     },
@@ -24,7 +34,7 @@ export default new Vuex.Store({
       state.categoryList = payload
     },      
     addDataToPaymentsList (state, payload) {
-      state.paymentsList.push(payload)
+        state.paymentsList.push(payload)
     },
     addDataToCategoryList (state, payload) {
       state.categoryList.push(payload)
@@ -32,7 +42,10 @@ export default new Vuex.Store({
   },
   
   actions: {
-     fetchData ({commit}) {
+    fetchData ({state, commit}) {
+      if (state.dataLoaded){
+        return
+      }
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve([
@@ -55,16 +68,23 @@ export default new Vuex.Store({
         }, 1000)
       })
       .then(res => {
-        // запускаем изменение состояния через commit
-        commit('setPaymentsListData', res)
-      })
+          commit('setPaymentsListData', res);
+          commit('setDataLoaded', true);
+      });
+
     }, 
-    fetchCategoryList({commit}) {
+    fetchCategoryList({state, commit}) {
+      if (state.categoriesLoaded){
+        return
+      }
       return new Promise((resolve)=> {
         setTimeout(()=>{
           resolve (['Food', 'Transport', 'Education', 'Entertainment'])
         }, 1000)
-      }).then(res => { commit('setCategories', res)})
+      }).then(res => { 
+        commit('setCategories', res);
+        commit('setCategoriesLoaded', true);
+      })
     }
   },
   modules: {

@@ -20,10 +20,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCategoryList"]),
+    ...mapGetters(["getCategoryList", "getCategoriesLoaded"]),
 
     categoryList() {
       return this.getCategoryList;
+    },
+    categoriesLoaded() {
+      return this.getCategoriesLoaded;
     },
   },
   methods: {
@@ -39,8 +42,10 @@ export default {
       this.category = "";
     },
   },
-  created() {
-    this.$store.dispatch("fetchCategoryList");
+  async created() {
+    if (!this.categoriesLoaded) {
+      await this.$store.dispatch("fetchCategoryList");
+    }
   },
 };
 </script>

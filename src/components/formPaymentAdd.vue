@@ -45,10 +45,16 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCategoryList"]),
+    ...mapGetters(["getCategoryList", "getDataLoaded", "getCategoriesLoaded"]),
 
     categoryList() {
       return this.getCategoryList;
+    },
+    categoriesLoaded() {
+      return this.getCategoriesLoaded;
+    },
+    paymentsLoaded() {
+      return this.getDataLoaded;
     },
     getCurrentDate() {
       const today = new Date();
@@ -84,10 +90,13 @@ export default {
       this.addDataToPaymentsList(data);
     },
   },
-  created() {
-    this.$store.dispatch("fetchCategoryList");
-  },
-  mounted() {
+  async created() {
+    if (!this.paymentsLoaded) {
+      await this.$store.dispatch("fetchData");
+    }
+    if (!this.categoriesLoaded) {
+      await this.$store.dispatch("fetchCategoryList");
+    }
     if (this.categoryProp) {
       this.category = this.categoryProp;
     }
