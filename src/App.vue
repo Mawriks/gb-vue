@@ -8,8 +8,42 @@
       >
     </nav>
     <router-view />
+    <transition name="fade">
+      <ModalWindow :settings="settings" v-if="modalShow" />
+    </transition>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      modalShow: false,
+      settings: {},
+    };
+  },
+  components: {
+    ModalWindow: () => import("@/components/ModalWindow.vue"),
+  },
+  methods: {
+    onShow(data) {
+      this.modalShow = true;
+      this.settings = data;
+    },
+    onHide() {
+      this.modalShow = false;
+      this.settings = {};
+    },
+  },
+  mounted() {
+    this.$modal.EventBus.$on("show", this.onShow);
+    this.$modal.EventBus.$on("hide", this.onHide);
+  },
+  beforeDestroy() {
+    this.$modal.EventBus.$off("show", this.onShow);
+    this.$modal.EventBus.$off("hide", this.onHide);
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -31,5 +65,13 @@ nav {
       color: #42b983;
     }
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

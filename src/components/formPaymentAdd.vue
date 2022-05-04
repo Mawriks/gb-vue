@@ -1,7 +1,6 @@
 <template>
   <form @submit.prevent="addPaymentData">
     <fieldset>
-      <legend>Add new cost</legend>
       <div>
         <input type="date" placeholder="Payment data" v-model="date" />
         <input
@@ -120,9 +119,9 @@ form {
   }
   fieldset {
     border-color: #ffffff;
-    border-style: solid;
-    border-width: 1px;
-    box-shadow: 0px 0px 15px rgba(222, 222, 222, 0.5);
+    padding: 0;
+    border: 0;
+    margin: 0;
     legend {
       font-size: 12px;
     }

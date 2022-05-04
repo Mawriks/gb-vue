@@ -4,15 +4,13 @@
       <header>
         <h1 class="title">My personal costs</h1>
       </header>
-      <formVisiabilityButton
-        :classBtn="'show'"
-        :show="show"
-        @changeVisiability="changeVisiability('show')"
-      >
-        Add new cost
-      </formVisiabilityButton>
-      <div v-show="show">
-        <formPaymentAdd />
+      <div class="btn-panel">
+        <button @click="openModalAddCost" class="btn show">
+          Add new cost <span>+</span>
+        </button>
+        <button @click="openModalAddCategory" class="btn show">
+          Add new category <span>+</span>
+        </button>
       </div>
       <paymentsList
         :payments="currentPageElements"
@@ -26,34 +24,22 @@
         @changePage="changePage"
       />
       <br />
-      <div>
-        <formCategoryAdd />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import paymentsList from "@/components/paymentsList.vue";
-import formVisiabilityButton from "@/components/formVisiabilityButton.vue";
-import formPaymentAdd from "@/components/formPaymentAdd.vue";
-import paginationModule from "@/components/paginationModule.vue";
-import formCategoryAdd from "@/components/formCategoryAdd.vue";
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "HomeView",
   components: {
-    paymentsList,
-    formVisiabilityButton,
-    formPaymentAdd,
-    paginationModule,
-    formCategoryAdd,
+    paymentsList: () => import("@/components/paymentsList.vue"),
+    paginationModule: () => import("@/components/paginationModule.vue"),
   },
   data() {
     return {
-      show: false,
       current: 1,
       elementsOnPage: 3,
     };
@@ -75,6 +61,18 @@ export default {
     changeVisiability(el) {
       this[el] = !this[el];
     },
+    openModalAddCost() {
+      this.$modal.show("addpayment", {
+        title: "Add new cost",
+        component: "formPaymentAdd",
+      });
+    },
+    openModalAddCategory() {
+      this.$modal.show("addpayment", {
+        title: "Add new category",
+        component: "formCategoryAdd",
+      });
+    },
   },
   async created() {
     if (!this.getDataLoaded) {
@@ -90,6 +88,11 @@ export default {
 }
 .home {
   display: flex;
+}
+.btn-panel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 .btn {
   display: inline-block;
@@ -113,9 +116,8 @@ export default {
   color: #fff;
   background-color: #0d6efd;
   border-color: #0d6efd;
-  margin-bottom: 20px;
   span {
-    margin-left: 10px;
+    margin-left: 5px;
     font-size: 16px;
   }
 }
