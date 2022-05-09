@@ -1,8 +1,13 @@
 <template>
-  <form @submit.prevent="addPaymentData">
+  <form @submit.prevent="idProp ? editPayment() : addPaymentData()">
     <fieldset>
       <div>
-        <input type="date" placeholder="Payment data" v-model="date" />
+        <input
+          v-if="!idProp"
+          type="date"
+          placeholder="Payment data"
+          v-model="date"
+        />
         <input
           type="number"
           placeholder="Payment value"
@@ -10,14 +15,15 @@
         />
       </div>
       <select v-model="category">
-        <option disabled selected value="">Выберите категорию</option>
+        <option disabled selected value="">Choose your category</option>
         <option v-for="(option, i) in categoryList" :key="i" :value="option">
           {{ option }}
         </option>
       </select>
     </fieldset>
     <br />
-    <button class="btn">Add cost <span>+</span></button>
+    <button v-if="idProp" class="btn">Save</button>
+    <button v-else class="btn">Add cost <span>+</span></button>
   </form>
 </template>
 
@@ -32,6 +38,10 @@ export default {
       default: () => "",
     },
     valueProp: {
+      type: Number,
+      default: () => null,
+    },
+    idProp: {
       type: Number,
       default: () => null,
     },
@@ -69,7 +79,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["addDataToPaymentsList"]),
+    ...mapMutations(["addDataToPaymentsList", "setPaymentData"]),
     convertDate(date) {
       if (date) {
         let dateArr = date.split("-");
@@ -88,6 +98,14 @@ export default {
       };
       this.addDataToPaymentsList(data);
     },
+    editPayment() {
+      const payment = {
+        id: +this.idProp,
+        category: this.category,
+        value: this.value,
+      };
+      this.setPaymentData(payment);
+    },
   },
   async created() {
     if (!this.paymentsLoaded) {
@@ -102,7 +120,7 @@ export default {
     if (this.valueProp) {
       this.value = this.valueProp;
     }
-    if (this.categoryProp && this.valueProp) {
+    if (this.categoryProp && this.valueProp && !this.idProp) {
       this.addPaymentData();
     }
   },

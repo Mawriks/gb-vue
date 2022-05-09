@@ -39,6 +39,14 @@ export default new Vuex.Store({
     addDataToCategoryList (state, payload) {
       state.categoryList.push(payload)
     },
+    removeDataFromPaymentsList(state, payload) {
+      let filtered = state.paymentsList.filter( (item, index)=> index !== payload);
+      state.paymentsList = filtered;
+    },
+    setPaymentData(state, payload){
+      state.paymentsList[payload.id - 1].category = payload.category;
+      state.paymentsList[payload.id - 1].value = payload.value;
+    }
   },
   
   actions: {

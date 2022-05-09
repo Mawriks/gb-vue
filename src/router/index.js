@@ -20,6 +20,11 @@ const routes = [
     component: () => import('../views/formPaymentAdd.vue')
   },
   {
+    path: '/edit/payment/:id',
+    name: 'editpayment',
+    component: () => import('../views/formPaymentAdd.vue')
+  },
+  {
     path: '*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue')

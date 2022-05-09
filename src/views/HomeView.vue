@@ -4,6 +4,12 @@
       <header>
         <h1 class="title">My personal costs</h1>
       </header>
+      <nav class="tags">
+        <router-link to="/add/payment/Transport?value=200">
+          Transport: 200$
+        </router-link>
+        <router-link to="/add/payment/Food?value=120"> Food: 120$ </router-link>
+      </nav>
       <div class="btn-panel">
         <button @click="openModalAddCost" class="btn show">
           Add new cost <span>+</span>
@@ -94,6 +100,18 @@ export default {
   justify-content: space-between;
   margin-bottom: 20px;
 }
+.tags {
+  display: flex;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  a {
+    text-decoration: none;
+    & + a {
+      margin-left: 20px;
+    }
+  }
+}
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -119,6 +137,14 @@ export default {
   span {
     margin-left: 5px;
     font-size: 16px;
+  }
+  &:hover,
+  &:active {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+  }
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgb(49 132 253 / 50%);
   }
 }
 </style>

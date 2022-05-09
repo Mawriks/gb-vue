@@ -7,6 +7,7 @@
           <th>Date</th>
           <th>Category</th>
           <th>Value</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -15,6 +16,19 @@
           <td>{{ payment.date }}</td>
           <td>{{ payment.category }}</td>
           <td>{{ payment.value }}</td>
+          <td>
+            <editPaymentMenu :paymentId="elNumber + i" />
+            <!-- <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+              />
+            </svg> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,6 +41,9 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "paymentsList",
+  components: {
+    editPaymentMenu: () => import("@/components/editPaymentMenu.vue"),
+  },
   props: {
     payments: {
       type: Array,
@@ -68,5 +85,11 @@ th {
 }
 td {
   padding: 10px 0;
+  svg {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.4;
+    }
+  }
 }
 </style>

@@ -1,11 +1,8 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/add/payment/Transport?value=200"
-        >Add to Transport Category payment with 200$</router-link
-      >
+      <router-link to="/">Dashboard</router-link> |
+      <router-link to="/about">About</router-link>
     </nav>
     <router-view />
     <transition name="fade">
@@ -53,7 +50,11 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
+a {
+  &:hover {
+    color: #0a58ca;
+  }
+}
 nav {
   padding: 30px;
 
@@ -62,7 +63,7 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #0a58ca;
     }
   }
 }
