@@ -74,7 +74,7 @@ export default {
       });
     },
     openModalAddCategory() {
-      this.$modal.show("addpayment", {
+      this.$modal.show("addcategory", {
         title: "Add new category",
         component: "formCategoryAdd",
       });

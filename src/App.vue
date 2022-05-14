@@ -8,6 +8,9 @@
     <transition name="fade">
       <ModalWindow :settings="settings" v-if="modalShow" />
     </transition>
+    <transition name="fade">
+      <DropdownMenu />
+    </transition>
   </div>
 </template>
 <script>
@@ -20,6 +23,7 @@ export default {
   },
   components: {
     ModalWindow: () => import("@/components/ModalWindow.vue"),
+    DropdownMenu: () => import("@/components/DropdownMenuTemplate.vue"),
   },
   methods: {
     onShow(data) {

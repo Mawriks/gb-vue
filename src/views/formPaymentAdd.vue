@@ -1,14 +1,8 @@
 <template>
   <div class="payment-add">
     <div>
-      <h1 class="title" v-if="id">Edit payment #{{ id }}</h1>
-      <h1 class="title" v-else>Add new payment in {{ category }}</h1>
-
-      <formPaymentAdd
-        :idProp="id"
-        :categoryProp="category"
-        :valueProp="value"
-      />
+      <h1 class="title">Add new payment in {{ $route.params.category }}</h1>
+      <formPaymentAdd :payment="payment" />
     </div>
   </div>
 </template>
@@ -23,9 +17,7 @@ export default {
   },
   data() {
     return {
-      category: null,
-      value: null,
-      id: null,
+      payment: {},
     };
   },
   computed: {
@@ -36,16 +28,11 @@ export default {
       if (location.search) {
         let params = new URLSearchParams(location.search);
         if (params.get("value")) {
-          this.value = +params.get("value");
+          this.payment.value = +params.get("value");
         }
       }
       if (this.$route.params.category) {
-        this.category = this.$route.params.category;
-      }
-      if (this.$route.params.id) {
-        this.id = +this.$route.params.id;
-        this.category = this.getPaymentsList[this.id - 1].category;
-        this.value = this.getPaymentsList[this.id - 1].value;
+        this.payment.category = this.$route.params.category;
       }
     },
   },

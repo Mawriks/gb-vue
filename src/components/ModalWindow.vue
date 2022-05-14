@@ -4,7 +4,10 @@
       <button class="btn-close" @click="onCloseClick">x</button>
       <div class="title">{{ settings.title }}</div>
       <div class="content">
-        <component :is="settings.component" />
+        <component
+          :is="settings.component"
+          :payment="settings.props ? settings.props.item : null"
+        />
       </div>
     </div>
     <div class="modal-backdrop"></div>
