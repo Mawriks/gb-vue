@@ -1,7 +1,17 @@
 <template>
   <div class="calculator">
-    <input type="number" class="calculator__input" v-model.number="operand1" />
-    <input type="number" class="calculator__input" v-model.number="operand2" />
+    <input
+      name="operand1"
+      type="number"
+      class="calculator__input"
+      v-model.number="operand1"
+    />
+    <input
+      name="operand2"
+      type="number"
+      class="calculator__input"
+      v-model.number="operand2"
+    />
     = {{ result }}<br />
     <div class="error" v-show="error != ''">
       <strong>Внимание!</strong> {{ error }}
@@ -11,6 +21,7 @@
       <button
         v-for="operator in operators"
         :key="operator"
+        :name="operator"
         @click="calculator(operator)"
       >
         {{ operator }}
@@ -26,12 +37,13 @@
       <div class="calculator__buttons">
         <button
           v-for="keyboardKey in keysArray"
+          :name="'key' + keyboardKey"
           @click="toOperand('add', keyboardKey)"
           :key="keyboardKey"
         >
           {{ keyboardKey }}
         </button>
-        <button @click="toOperand('remove')">&larr;</button>
+        <button name="remove" @click="toOperand('remove')">&larr;</button>
       </div>
       <br />
       <div class="calculator__radio">
@@ -86,8 +98,6 @@ export default {
         case "^":
           this.result = Math.pow(this.operand1, this.operand2);
           break;
-        default:
-          this.result = 0;
       }
     },
     numberToArr(number) {
