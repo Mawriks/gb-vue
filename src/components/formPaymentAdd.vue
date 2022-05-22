@@ -1,30 +1,36 @@
 <template>
-  <form @submit.prevent="submitFunc">
-    <fieldset>
-      <div>
-        <input
-          v-if="!idProp"
-          type="date"
-          placeholder="Payment data"
-          v-model="date"
-        />
-        <input
-          type="number"
-          placeholder="Payment value"
-          v-model.number="value"
-        />
-      </div>
-      <select v-model="category">
-        <option disabled selected value="">Choose your category</option>
-        <option v-for="(option, i) in categoryList" :key="i" :value="option">
-          {{ option }}
-        </option>
-      </select>
-    </fieldset>
-    <br />
-    <button v-if="idProp" class="btn">Save</button>
-    <button v-else class="btn">Add cost <span>+</span></button>
-  </form>
+  <div>
+    <form @submit.prevent="submitFunc">
+      <fieldset>
+        <div>
+          <input
+            v-if="!idProp"
+            type="date"
+            placeholder="Payment data"
+            v-model="date"
+          />
+          <v-text-field
+            v-model.number="value"
+            label="Payment value"
+            required
+          ></v-text-field>
+        </div>
+        <v-select
+          v-model="category"
+          :items="categoryList"
+          label="Choose tour category"
+        ></v-select>
+      </fieldset>
+      <br />
+      <v-btn v-if="idProp" type="submit" color="primary" large dark>
+        <span class="mr-1">Save</span>
+      </v-btn>
+      <v-btn v-else type="submit" color="primary" large dark>
+        <span class="mr-1">Add cost</span>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -44,6 +50,7 @@ export default {
       date: null,
       submitFunc: this.addPaymentData,
       idProp: null,
+      menu: false,
     };
   },
   computed: {

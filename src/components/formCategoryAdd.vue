@@ -1,11 +1,15 @@
 <template>
-  <form @submit.prevent="addCategoryData">
-    <fieldset>
-      <input type="text" v-model="category" placeholder="New category name" />
-    </fieldset>
-    <br />
-    <button class="btn">Add category <span>+</span></button>
-  </form>
+  <v-form @submit.prevent="addCategoryData">
+    <v-text-field
+      v-model="category"
+      label="New category name"
+      required
+    ></v-text-field>
+    <v-btn color="primary" type="submit" large dark>
+      <span class="mr-1">Add category</span>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
