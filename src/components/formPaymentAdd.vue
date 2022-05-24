@@ -1,36 +1,64 @@
 <template>
-  <div>
-    <form @submit.prevent="submitFunc">
-      <fieldset>
-        <div>
-          <input
-            v-if="!idProp"
-            type="date"
-            placeholder="Payment data"
-            v-model="date"
-          />
+  <v-form @submit.prevent="submitFunc">
+    <v-container>
+      <v-row>
+        <v-col cols="6" v-if="!idProp">
+          <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="true"
+            transition="scale-transition"
+            offset-y
+            max-width="290px"
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="computedDateFormatted"
+                label="Date"
+                prepend-icon="mdi-calendar"
+                v-on="on"
+                v-bind="attrs"
+                readonly
+                outlined
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              no-title
+              @input="menu = false"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col :cols="checkCols(idProp)">
           <v-text-field
+            class="mt-0 pt-0"
             v-model.number="value"
             label="Payment value"
             required
+            outlined
           ></v-text-field>
-        </div>
-        <v-select
-          v-model="category"
-          :items="categoryList"
-          label="Choose tour category"
-        ></v-select>
-      </fieldset>
-      <br />
-      <v-btn v-if="idProp" type="submit" color="primary" large dark>
-        <span class="mr-1">Save</span>
-      </v-btn>
-      <v-btn v-else type="submit" color="primary" large dark>
-        <span class="mr-1">Add cost</span>
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </form>
-  </div>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            v-model="category"
+            :items="categoryList"
+            label="Choose tour category"
+            outlined
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
+    <br />
+    <v-btn v-if="idProp" type="submit" color="primary" large dark>
+      <span class="mr-1">Save</span>
+      <v-icon>mdi-content-save-outline</v-icon>
+    </v-btn>
+    <v-btn v-else type="submit" color="primary" large dark>
+      <span class="mr-1">Add cost</span>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -55,7 +83,9 @@ export default {
   },
   computed: {
     ...mapGetters(["getCategoryList", "getDataLoaded", "getCategoriesLoaded"]),
-
+    computedDateFormatted() {
+      return this.convertDate(this.date);
+    },
     categoryList() {
       return this.getCategoryList;
     },
@@ -89,6 +119,12 @@ export default {
         return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]}`;
       }
       return this.getCurrentDate;
+    },
+    checkCols(id) {
+      if (id) {
+        return 12;
+      }
+      return 6;
     },
     addPaymentData() {
       const data = {
@@ -125,63 +161,12 @@ export default {
       this.addPaymentData();
     }
   },
-  mounted() {
-    console.log(this.payment);
-  },
 };
 </script>
 
 <style scoped lang="scss">
 form {
-  max-width: 384px;
+  max-width: 400px;
   text-align: right;
-  div {
-    display: flex;
-    margin-bottom: 10px;
-  }
-  fieldset {
-    border-color: #ffffff;
-    padding: 0;
-    border: 0;
-    margin: 0;
-    legend {
-      font-size: 12px;
-    }
-  }
-}
-input {
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  & + input {
-    margin-left: 10px;
-  }
-}
-select {
-  display: block;
-  width: 100%;
-  padding: 0.594rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 </style>

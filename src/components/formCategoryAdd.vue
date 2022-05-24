@@ -4,6 +4,7 @@
       v-model="category"
       label="New category name"
       required
+      outlined
     ></v-text-field>
     <v-btn color="primary" type="submit" large dark>
       <span class="mr-1">Add category</span>

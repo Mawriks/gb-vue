@@ -2,7 +2,7 @@
   <v-container>
     <h1 class="text-h2 text-left mb-12 mt-8">My personal costs</h1>
     <v-row>
-      <v-col :cols="4">
+      <v-col cols="4">
         <v-layout justify-start class="mb-8">
           <v-btn
             elevation="0"
@@ -44,7 +44,7 @@
           @changePage="changePage"
         />
       </v-col>
-      <v-col :cols="8">Diagram</v-col>
+      <v-col cols="8">Diagram</v-col>
     </v-row>
     <v-dialog v-model="dialog" max-width="385px">
       <v-card>
