@@ -81,6 +81,16 @@ export default {
       menu: false,
     };
   },
+  watch: {
+    payment: {
+      handler: function (newVal, oldVal) {
+        console.log(newVal, oldVal);
+        this.setNewDataAndDoAction();
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
   computed: {
     ...mapGetters(["getCategoryList", "getDataLoaded", "getCategoriesLoaded"]),
     computedDateFormatted() {
@@ -134,6 +144,16 @@ export default {
       };
       this.addDataToPaymentsList(data);
     },
+    setNewDataAndDoAction() {
+      this.category = this.payment.category;
+      this.value = this.payment.value;
+      if (this.payment?.id) {
+        this.submitFunc = this.editPayment;
+        this.idProp = this.payment.id;
+        return;
+      }
+      this.addPaymentData();
+    },
     editPayment() {
       const paymentData = {
         id: +this.idProp,
@@ -151,14 +171,7 @@ export default {
       await this.$store.dispatch("fetchCategoryList");
     }
     if (this.payment) {
-      this.category = this.payment.category;
-      this.value = this.payment.value;
-      if (this.payment?.id) {
-        this.submitFunc = this.editPayment;
-        this.idProp = this.payment.id;
-        return;
-      }
-      this.addPaymentData();
+      this.setNewDataAndDoAction();
     }
   },
 };

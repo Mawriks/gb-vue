@@ -26,9 +26,10 @@
                 </template>
                 <v-list>
                   <v-list-item
+                    :data-id="elNumber + i + 1"
                     dense
-                    v-for="(item, i) in items"
-                    :key="i"
+                    v-for="(item, j) in items"
+                    :key="j"
                     @click="item.action(payment, elNumber + i + 1)"
                   >
                     <v-list-item-title class="text-body-2 font-weight-light">{{
@@ -43,6 +44,20 @@
       </template>
     </v-simple-table>
     <p>Total: {{ getFPV }}</p>
+    <v-dialog v-model="dialog" max-width="385px">
+      <v-card>
+        <v-card-title class="text-h4 mb-4 font-weight-light">
+          <span>Edit payment</span>
+          <v-spacer></v-spacer>
+          <v-btn light icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <formPaymentAdd :payment="payment" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -51,8 +66,13 @@ import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "paymentsList",
+  components: {
+    formPaymentAdd: () => import("@/components/formPaymentAdd.vue"),
+  },
   data() {
     return {
+      payment: {},
+      dialog: false,
       items: [
         {
           title: "Edit",
@@ -95,13 +115,16 @@ export default {
       if (id) {
         item.id = id;
       }
-      this.$modal.show("editpayment", {
+      /* this.$modal.show("editpayment", {
         title: "Edit payment",
         component: "formPaymentAdd",
         props: {
           item,
         },
-      });
+      }); */
+
+      Object.assign(this.payment, item);
+      this.dialog = true;
     },
     deleteItem(payment) {
       this.removeDataFromPaymentsList(payment);
