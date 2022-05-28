@@ -87,7 +87,6 @@ export default {
         console.log(newVal, oldVal);
         this.setNewDataAndDoAction();
       },
-      immediate: true,
       deep: true,
     },
   },
@@ -119,7 +118,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["addDataToPaymentsList", "setPaymentData"]),
+    ...mapMutations(["addDataToPaymentsList", "setPaymentData", "addDiagData"]),
     convertDate(date) {
       if (date) {
         let dateArr = date.split("-");
@@ -143,6 +142,7 @@ export default {
         value: this.value,
       };
       this.addDataToPaymentsList(data);
+      this.addDiagData(data);
     },
     setNewDataAndDoAction() {
       this.category = this.payment.category;
@@ -161,6 +161,7 @@ export default {
         value: this.value,
       };
       this.setPaymentData(paymentData);
+      this.$store.dispatch("updateDiagData");
     },
   },
   async created() {
@@ -171,7 +172,7 @@ export default {
       await this.$store.dispatch("fetchCategoryList");
     }
     if (this.payment) {
-      this.setNewDataAndDoAction();
+      await this.setNewDataAndDoAction();
     }
   },
 };

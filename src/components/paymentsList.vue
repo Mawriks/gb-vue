@@ -115,19 +115,12 @@ export default {
       if (id) {
         item.id = id;
       }
-      /* this.$modal.show("editpayment", {
-        title: "Edit payment",
-        component: "formPaymentAdd",
-        props: {
-          item,
-        },
-      }); */
-
-      Object.assign(this.payment, item);
+      this.payment = Object.assign({}, item);
       this.dialog = true;
     },
     deleteItem(payment) {
       this.removeDataFromPaymentsList(payment);
+      this.$store.dispatch("updateDiagData");
     },
   },
 };

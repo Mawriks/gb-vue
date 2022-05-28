@@ -44,7 +44,9 @@
           @changePage="changePage"
         />
       </v-col>
-      <v-col cols="8">Diagram</v-col>
+      <v-col cols="6">
+        <GoogleChart :chartData="diagData" />
+      </v-col>
     </v-row>
     <v-dialog v-model="dialog" max-width="385px">
       <v-card>
@@ -79,7 +81,7 @@
 
 <script>
 // @ is an alias to /src
-import { mapMutations, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "HomeView",
@@ -88,6 +90,7 @@ export default {
     paginationModule: () => import("@/components/paginationModule.vue"),
     formPaymentAdd: () => import("@/components/formPaymentAdd.vue"),
     formCategoryAdd: () => import("@/components/formCategoryAdd.vue"),
+    GoogleChart: () => import("@/components/googleChart.vue"),
   },
   data() {
     return {
@@ -98,7 +101,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getPaymentsList", "getDataLoaded"]),
+    ...mapGetters(["getPaymentsList", "getDataLoaded", "getDiagData"]),
+    diagData() {
+      return this.getDiagData;
+    },
     currentPageElements() {
       return this.getPaymentsList.slice(
         this.elementsOnPage * (this.current - 1),
@@ -107,24 +113,8 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setPaymentsListData"]),
     changePage(page) {
       this.current = page;
-    },
-    changeVisiability(el) {
-      this[el] = !this[el];
-    },
-    openModalAddCost() {
-      this.$modal.show("addpayment", {
-        title: "Add new cost",
-        component: "formPaymentAdd",
-      });
-    },
-    openModalAddCategory() {
-      this.$modal.show("addcategory", {
-        title: "Add new category",
-        component: "formCategoryAdd",
-      });
     },
   },
   async created() {
